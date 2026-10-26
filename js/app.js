@@ -9,11 +9,13 @@ function route() {
   const main = $('#main');
   if (h === 'glossary') main.innerHTML = viewGlossary();
   else if (h === 'ml') main.innerHTML = viewML();
+  else if (h === 'impl') main.innerHTML = viewImpl();
   else if (h.startsWith('t-') && TERMS[h.slice(2)]) main.innerHTML = viewTerm(h.slice(2));
   else { h = 'home'; main.innerHTML = viewHome(); }
   $$('[data-widget]', main).forEach(el => WIDGETS[el.dataset.widget](el));
   $$('.rail-item').forEach(a => {
-    const nav = h.startsWith('t-') ? (sectionOf(h.slice(2)).name === ML_SUBJECT ? 'ml' : 'glossary') : h;
+    const subj = h.startsWith('t-') ? sectionOf(h.slice(2)).name : '';
+    const nav = h.startsWith('t-') ? (subj === ML_SUBJECT ? 'ml' : subj === IMPL_SUBJECT ? 'impl' : 'glossary') : h;
     if (a.dataset.nav === nav) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
   requestAnimationFrame(drawEdges);

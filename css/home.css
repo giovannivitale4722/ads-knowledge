@@ -95,3 +95,9 @@
 .ml-ex h3 { font-size: var(--fs-section); }
 .ml-ex p { font-size: 13px; color: var(--muted); line-height: 1.5; }
 .ml-go { font-size: 13px; font-weight: 500; margin-top: 4px; }
+
+/* implementations hub */
+.impl-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+.impl-links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: auto; }
+.impl-links a { text-decoration: none; }
+.impl-links a:hover { text-decoration: underline; text-underline-offset: 3px; }

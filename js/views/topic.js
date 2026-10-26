@@ -6,7 +6,7 @@ function viewTerm(id) {
   const chips = list => list.map(x => `<a href="#t-${x}">${TERMS[x].name}</a>`).join('');
   return `
     <header class="title-row">
-      <div><div class="crumbs"><a href="#home">Home</a> / <a href="${sec.name === ML_SUBJECT ? '#ml' : '#glossary'}">${sec.name}</a></div><h1>${t.name}</h1><p class="sub">${t.short}</p></div>
+      <div><div class="crumbs"><a href="#home">Home</a> / <a href="${sec.name === ML_SUBJECT ? '#ml' : sec.name === IMPL_SUBJECT ? '#impl' : '#glossary'}">${sec.name}</a></div><h1>${t.name}</h1><p class="sub">${t.short}</p></div>
     </header>
     ${before.length ? `<div class="path" aria-label="Builds on"><span class="path-l">Builds on</span>${before.map(x => `<a href="#t-${x}">${TERMS[x].name}</a><span class="arr" aria-hidden="true">→</span>`).join('')}<span class="here">${t.name}</span></div>` : ''}
     <div class="topic-layout">

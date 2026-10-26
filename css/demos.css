@@ -150,3 +150,14 @@ input[type="range"] { width: 100%; accent-color: var(--text); }
 .tlegend .lw { background: var(--hue); }
 .tlegend .tw { background: var(--text); width: 3px; }
 @media (max-width: 520px) { .lw-row { grid-template-columns: minmax(0, 1fr) 96px; } .lw-row .ctrack { grid-column: 1 / -1; grid-row: 2; } }
+
+/* Target CPA demos: target and best-alpha reference lines, a second (ink) series, step-size buttons */
+.chart .target-l { stroke: var(--negative); stroke-dasharray: 4 3; opacity: .8; }
+.chart .best-l { stroke: var(--hue); stroke-dasharray: 4 3; opacity: .7; }
+.chart .curve.ink { stroke: var(--text); }
+.chart .lbl.strong { fill: var(--text); font-weight: 500; }
+.seg { display: inline-flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--control); border-radius: var(--radius-control); overflow: hidden; }
+.seg button { font: 400 13px var(--font); height: 32px; padding: 0 10px; border: 0; border-left: 1px solid var(--control); background: var(--surface); color: var(--muted); cursor: pointer; }
+.seg button:first-child { border-left: 0; }
+.seg button:hover { color: var(--text); }
+.seg button[aria-pressed="true"] { background: var(--text); color: var(--surface); }
