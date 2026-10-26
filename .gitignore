@@ -1,0 +1,6 @@
+# Original screenshots stay local
+sources/
+# Design-checker output and the installed skill (restore with: npx skills experimental_install)
+.taste-skill/
+.claude/
+.DS_Store

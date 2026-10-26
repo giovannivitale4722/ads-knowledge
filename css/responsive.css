@@ -1,0 +1,17 @@
+/* phone: rail becomes a bottom bar */
+@media (max-width: 760px) {
+  .rail {
+    top: auto; right: 0; width: auto; height: auto; flex-direction: row; justify-content: center; gap: 4px;
+    border-right: 0; border-top: 1px solid var(--border); background: var(--surface);
+    padding: 6px max(16px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  }
+  .mark { display: none; }
+  .rail-item { width: auto; min-width: 96px; height: 48px; display: flex; flex-direction: column; gap: 2px; justify-content: center; }
+  .rail-item span { position: static; width: auto; height: auto; clip: auto; font-size: 11px; }
+  .canvas { margin-left: 0; }
+  .wrap { padding-block: 24px 96px; }
+  .title-row .actions { width: 100%; }
+  .pager { grid-template-columns: minmax(0, 1fr); }
+  .pager a.next { grid-column: auto; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
