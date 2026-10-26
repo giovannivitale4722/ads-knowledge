@@ -6,6 +6,9 @@ one of 100,000 auctions to make that happen.
 
 You write the two core pieces. Everything else is done.
 
+**Start with the visual walkthrough:** https://www.giovitale.com/ads-knowledge/#t-target-cpa
+It explains the strategy step by step, with an α dial and a replay of the controller learning, and maps each idea to the code here.
+
 ## The strategy in one page
 
 **The goal.** Maximize conversions while keeping the average cost per conversion (CPA) at or
