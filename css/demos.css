@@ -127,3 +127,18 @@ input[type="range"] { width: 100%; accent-color: var(--text); }
   .fnode:not(.buyer)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -19px; transform: translateX(-50%); }
   .fsteps li { grid-template-columns: 48px minmax(0, 1fr); }
 }
+
+/* truthful bidding strip (Vickrey page) */
+.tstrip { position: relative; height: 28px; border-radius: var(--radius-control); background: var(--border); overflow: hidden; }
+.tstrip span { position: absolute; top: 0; bottom: 0; transition: left .2s, width .2s; }
+.tstrip .same, .tlegend .same { background: var(--edge); }
+.tstrip .loss, .tlegend .loss { background: var(--negative); }
+.tstrip .miss, .tlegend .miss { background: var(--pill-warning-ink); }
+.tstrip .tmark { width: 2px; margin-left: -1px; background: var(--text); }
+.tstrip-axis { position: relative; height: 16px; margin-top: -8px; font-size: var(--fs-small); color: var(--muted); }
+.tstrip-axis span { position: absolute; transform: translateX(-50%); }
+.tstrip-axis span:first-child { transform: none; }
+.tstrip-axis span:last-child { transform: translateX(-100%); }
+.tlegend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--fs-small); color: var(--muted); }
+.tlegend span { display: inline-flex; align-items: center; gap: 6px; }
+.tlegend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }

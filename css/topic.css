@@ -87,3 +87,6 @@ pre.code .c { color: var(--muted); }
   .gl-table td { border: 0; padding: 2px 12px; width: auto !important; }
   .gl-table td.def { grid-column: 1 / -1; color: var(--muted); }
 }
+
+/* a key sentence set apart in a topic page */
+.callout { font-size: 16px; line-height: 1.6; padding: 14px 16px; border-radius: var(--radius-control); background: var(--hue-soft); max-width: none; }
