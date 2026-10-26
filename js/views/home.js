@@ -2,6 +2,7 @@
 function viewHome() {
   const firsts = ordered().filter(id => !TERMS[id].needs.length);
   const demos = [
+    ['autobidding', 'Four strategies, one day', 'Compare Maximize Clicks, Maximize Conversions, Target CPA and Target ROAS'],
     ['target-cpa', 'The α dial', 'See how one multiplier sets every bid in an autobidder'],
     ['logistic-regression', 'Train a click model', 'Watch a real model learn from 2,000 impressions'],
     ['adx', 'Watch one impression get sold', 'Follow a real-time auction, millisecond by millisecond'],
@@ -18,6 +19,7 @@ function viewHome() {
     ['pctr', 'pCTR from a model score', '1 ÷ (1 + e<sup>−score</sup>)'],
     ['logistic-regression', 'Log loss', '−[y · ln p + (1 − y) · ln(1 − p)]'],
     ['target-cpa', 'Target CPA bid', 'α × pConv × target CPA'],
+    ['autobidding', 'Target ROAS bid', 'α × pConv × order value ÷ target ROAS'],
     ['ecpm', 'eCPM', 'Bid<sub>CPC</sub> × pCTR × 1000'],
     ['cpm', 'Cost of one impression', 'CPM ÷ 1000'],
     ['cpc', 'Cost per customer (CPA)', 'CPC ÷ conversion rate'],

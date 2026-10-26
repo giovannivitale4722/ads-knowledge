@@ -161,3 +161,11 @@ input[type="range"] { width: 100%; accent-color: var(--text); }
 .seg button:first-child { border-left: 0; }
 .seg button:hover { color: var(--text); }
 .seg button[aria-pressed="true"] { background: var(--text); color: var(--surface); }
+
+/* autobidding comparison table */
+.ab-table td.goal { background: var(--hue-soft); }
+.ab-table td.best { font-weight: 700; }
+.ab-table tr.sel td { background: var(--raised); }
+.ab-table tr.sel td.goal { background: var(--hue-soft); }
+.ab-key { font-size: var(--fs-small); color: var(--muted); }
+.goal-chip { background: var(--hue-soft); color: var(--text); padding: 1px 6px; border-radius: 4px; }

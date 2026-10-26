@@ -1,6 +1,6 @@
 /* Topic: target-cpa  ·  subject: Implementations  ·  registered in js/config.js
    The visual walkthrough for implementations/tcpa-autobidder (the C++ project). */
-TERMS['target-cpa'] = { name: 'Target CPA autobidder', needs: ['bid', 'expected-value', 'vickrey'],
+TERMS['target-cpa'] = { name: 'Target CPA autobidder', needs: ['autobidding'],
     short: 'An autobidder that wins as many conversions as possible while keeping the average cost per conversion at a target, using one bid multiplier it learns during the day.',
     body: () => `
       <h2>What you're building</h2>
