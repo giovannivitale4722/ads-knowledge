@@ -2,7 +2,7 @@
 
 A website for learning how Google Ads works, built from my notes and research.
 
-Live site: https://giovannivitale4722.github.io/ads-knowledge/
+Live site: https://www.giovitale.com/ads-knowledge/
 
 To preview it locally, open `index.html` in a browser. There is no build step. Pushing to `main` redeploys the site on GitHub Pages.
 
