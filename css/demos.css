@@ -142,3 +142,11 @@ input[type="range"] { width: 100%; accent-color: var(--text); }
 .tlegend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: var(--fs-small); color: var(--muted); }
 .tlegend span { display: inline-flex; align-items: center; gap: 6px; }
 .tlegend i { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+/* logistic regression trainer */
+.lr-weights { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-control); }
+.lw-row { display: grid; grid-template-columns: minmax(0, 190px) minmax(0, 1fr) 96px; gap: 10px; align-items: center; font-size: 13px; }
+.tmarker { position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: var(--text); transition: left .2s; }
+.tlegend .lw { background: var(--hue); }
+.tlegend .tw { background: var(--text); width: 3px; }
+@media (max-width: 520px) { .lw-row { grid-template-columns: minmax(0, 1fr) 96px; } .lw-row .ctrack { grid-column: 1 / -1; grid-row: 2; } }

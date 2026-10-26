@@ -84,3 +84,14 @@
 .about { gap: 10px; }
 .about p { font-size: 15px; line-height: 1.65; max-width: 80ch; }
 @media (max-width: 760px) { .themes { grid-template-columns: minmax(0, 1fr); } .title-row .search { width: 100%; } }
+
+/* an odd last subject card spans the full row */
+.theme:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+/* machine learning hub */
+.ml-examples { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--gap); }
+.ml-ex { text-decoration: none; color: var(--text); gap: 8px; transition: background .15s, border-color .15s; }
+.ml-ex:hover { border-color: var(--control); background: var(--raised); }
+.ml-ex h3 { font-size: var(--fs-section); }
+.ml-ex p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.ml-go { font-size: 13px; font-weight: 500; margin-top: 4px; }

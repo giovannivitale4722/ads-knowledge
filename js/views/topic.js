@@ -6,7 +6,7 @@ function viewTerm(id) {
   const chips = list => list.map(x => `<a href="#t-${x}">${TERMS[x].name}</a>`).join('');
   return `
     <header class="title-row">
-      <div><div class="crumbs"><a href="#home">Home</a> / <a href="#glossary">${sec.name}</a></div><h1>${t.name}</h1><p class="sub">${t.short}</p></div>
+      <div><div class="crumbs"><a href="#home">Home</a> / <a href="${sec.name === ML_SUBJECT ? '#ml' : '#glossary'}">${sec.name}</a></div><h1>${t.name}</h1><p class="sub">${t.short}</p></div>
     </header>
     ${before.length ? `<div class="path" aria-label="Builds on"><span class="path-l">Builds on</span>${before.map(x => `<a href="#t-${x}">${TERMS[x].name}</a><span class="arr" aria-hidden="true">→</span>`).join('')}<span class="here">${t.name}</span></div>` : ''}
     <div class="topic-layout">
@@ -15,7 +15,7 @@ function viewTerm(id) {
     </div>
     <section class="keep-going" aria-label="Keep going">
       ${leads.length ? `<div><span class="kg-l">Leads to</span><div class="path">${chips(leads)}</div></div>` : ''}
-      <div><span class="kg-l">More in ${sec.name}</span><div class="path">${chips(others)}</div></div>
+      ${others.length ? `<div><span class="kg-l">More in ${sec.name}</span><div class="path">${chips(others)}</div></div>` : ''}
     </section>
     <nav class="pager" aria-label="Roadmap order">
       ${prev ? `<a href="#t-${prev}"><span class="s">← Previous on the roadmap</span><span class="t">${TERMS[prev].name}</span></a>` : ''}

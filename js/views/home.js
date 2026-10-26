@@ -2,6 +2,7 @@
 function viewHome() {
   const firsts = ordered().filter(id => !TERMS[id].needs.length);
   const demos = [
+    ['logistic-regression', 'Train a click model', 'Watch a real model learn from 2,000 impressions'],
     ['adx', 'Watch one impression get sold', 'Follow a real-time auction, millisecond by millisecond'],
     ['pctr', 'Build a pCTR', 'Change the situation and watch the click prediction move'],
     ['cpc', 'What will I actually pay?', 'See why your real cost per click is below your max'],
@@ -14,6 +15,7 @@ function viewHome() {
   const formulas = [
     ['ad-rank', 'Ad Rank', 'Bid × pCTR × Ad Quality'],
     ['pctr', 'pCTR from a model score', '1 ÷ (1 + e<sup>−score</sup>)'],
+    ['logistic-regression', 'Log loss', '−[y · ln p + (1 − y) · ln(1 − p)]'],
     ['ecpm', 'eCPM', 'Bid<sub>CPC</sub> × pCTR × 1000'],
     ['cpm', 'Cost of one impression', 'CPM ÷ 1000'],
     ['cpc', 'Cost per customer (CPA)', 'CPC ÷ conversion rate'],

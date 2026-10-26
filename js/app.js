@@ -8,11 +8,13 @@ function route() {
   let h = location.hash.slice(1) || 'home';
   const main = $('#main');
   if (h === 'glossary') main.innerHTML = viewGlossary();
+  else if (h === 'ml') main.innerHTML = viewML();
   else if (h.startsWith('t-') && TERMS[h.slice(2)]) main.innerHTML = viewTerm(h.slice(2));
   else { h = 'home'; main.innerHTML = viewHome(); }
   $$('[data-widget]', main).forEach(el => WIDGETS[el.dataset.widget](el));
   $$('.rail-item').forEach(a => {
-    if (a.dataset.nav === (h.startsWith('t-') ? 'glossary' : h)) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    const nav = h.startsWith('t-') ? (sectionOf(h.slice(2)).name === ML_SUBJECT ? 'ml' : 'glossary') : h;
+    if (a.dataset.nav === nav) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
   requestAnimationFrame(drawEdges);
   buildToc();
