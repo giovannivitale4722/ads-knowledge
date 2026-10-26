@@ -4,3 +4,6 @@ sources/
 .taste-skill/
 .claude/
 .DS_Store
+# C++ build output and simulation results
+implementations/*/build/
+implementations/*/results/

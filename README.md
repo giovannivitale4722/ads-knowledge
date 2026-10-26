@@ -28,6 +28,7 @@ js/
   views/ml.js           Machine learning hub page
   search.js             Search box
   app.js                Routing, the term pop-up and startup (loads last)
+implementations/        Hands-on code projects, such as the C++ Target CPA autobidder
 sources/                My original screenshots. Kept locally (git-ignored), never published
 ```
 
