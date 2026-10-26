@@ -25,6 +25,7 @@ js/
   views/home.js         Home page
   views/topic.js        Topic page and its "On this page" outline
   views/glossary.js     All topics page
+  views/ml.js           Machine learning hub page
   search.js             Search box
   app.js                Routing, the term pop-up and startup (loads last)
 sources/                My original screenshots. Kept locally (git-ignored), never published
@@ -39,6 +40,8 @@ sources/                My original screenshots. Kept locally (git-ignored), nev
 3. Add the id to one subject in `js/config.js`.
 4. Add `<script src="js/topics/<new-id>.js"></script>` to `index.html`, in the topics group.
 5. Update `UPDATED` in `js/config.js`.
+
+To add a machine learning worked example, put its id in the "Machine learning in ads" subject. It then appears on the ML page (`#ml`, built in `js/views/ml.js`) automatically.
 
 The roadmap places topics automatically from `needs`. The browser console warns if a topic isn't in exactly one subject.
 
