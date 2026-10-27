@@ -184,3 +184,7 @@ input[type="range"] { width: 100%; accent-color: var(--text); }
 .btn-ghost-toggle { background: var(--surface); color: var(--text); border-color: var(--control); }
 .btn-ghost-toggle:hover { background: var(--raised); }
 .btn-ghost-toggle[aria-pressed="true"] { background: var(--hue-soft); color: var(--hue); border-color: var(--hue); }
+
+/* Maximize Conversions demos: traffic bars behind the spend chart, the spending plan line */
+.chart .traffic-b { fill: var(--raised); }
+.chart .plan-l { stroke: var(--hue); stroke-dasharray: 4 3; fill: none; stroke-width: 1.5; opacity: .8; }
