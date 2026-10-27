@@ -21,7 +21,9 @@ const TCPA = (() => {
   };
 
   // same rules as tcpa_bidder.cpp (bid, observe, end_window) and simulate.cpp (run_day)
-  const runDay = (day, alpha0, step, window = WINDOW) => {
+  // trust: 0 = fixed step. Otherwise the step is scaled by conversions ÷ (conversions + trust),
+  // so early, noisy windows move alpha less than later, data-rich ones.
+  const runDay = (day, alpha0, step, window = WINDOW, trust = 0) => {
     let alpha = alpha0, spend = 0, convs = 0, wins = 0;
     const windows = [];
     day.forEach((imp, i) => {
@@ -32,7 +34,8 @@ const TCPA = (() => {
       }
       if ((i + 1) % window === 0 || i + 1 === day.length) {
         const used = alpha;
-        if (convs > 0) alpha = Math.min(10, Math.max(0.1, alpha * Math.exp(step * (TARGET - spend / convs) / TARGET)));
+        const eff = trust ? step * convs / (convs + trust) : step;
+        if (convs > 0) alpha = Math.min(10, Math.max(0.1, alpha * Math.exp(eff * (TARGET - spend / convs) / TARGET)));
         windows.push({ alpha: used, cpa: convs ? spend / convs : 0, convs, spend });
       }
     });

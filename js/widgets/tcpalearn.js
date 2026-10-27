@@ -4,12 +4,14 @@ WIDGETS.tcpalearn = function (el) {
   const day = TCPA.day(), { best } = TCPA.sweep(day), T = TCPA.TARGET;
   const STEPS = [0.1, 0.25, 0.5, 1, 2];
   const W = 520, L = 46, R = 14, P1 = { top: 12, h: 110 }, P2 = { top: 150, h: 110 }, H = 290, AMAX = 4, CPA_MAX = 40;
-  let step = 0.25, run = null, shown = 0, timer = null;
+  let step = 0.25, trust = 0, run = null, shown = 0, timer = null;
+  const TRUST = 100;
 
   el.innerHTML = `
     <div class="w-head"><h5>Watch the controller learn</h5><p>α starts at 1. After every 1,000 auctions the controller looks at the cost so far and nudges α. The dashed line is the best fixed α, which the controller never gets to see.</p></div>
     <div class="ctrls">
       <span class="seg" role="group" aria-label="Step size">${STEPS.map(s => `<button type="button" data-s="${s}" aria-pressed="${s === step}">step ${s}</button>`).join('')}</span>
+      <button type="button" class="btn btn-ghost-toggle btn-sm" data-a="trust" aria-pressed="false">Scale step by data</button>
       <button type="button" class="btn btn-primary btn-sm" data-a="play">Replay the day</button>
     </div>
     <div class="outcomes" aria-live="polite">
@@ -55,6 +57,12 @@ WIDGETS.tcpalearn = function (el) {
     o('alpha').textContent = aNow.toFixed(2);
     if (shown < n()) { o('note').textContent = 'Running…'; return; }
     const pct = Math.round(100 * last.convs / best.convs);
+    if (trust) {
+      o('note').textContent = step >= 2
+        ? `Even with data-scaled steps, a step of 2 is too big: once enough data arrives, the full step kicks in and α lurches. Scaling helps, but it can't rescue every setting.`
+        : `With data-scaled steps, early windows (few conversions) barely move α, and the full step only kicks in once there's enough data to trust. Result: ${pct}% of the best conversions at ${money(last.cpa)}, much less sensitive to which step you picked.`;
+      return;
+    }
     o('note').textContent = {
       0.1: `A small step learns slowly but steadily. α is still creeping up as the day ends, so many auctions were bid too cautiously.`,
       0.25: `A good step size: α rises from 1 to about the best value and stays there, and the cost settles near $20. This is the behavior to aim for.`,
@@ -65,7 +73,7 @@ WIDGETS.tcpalearn = function (el) {
   };
   const play = () => {
     clearInterval(timer);
-    run = TCPA.runDay(day, 1, step); shown = 1; drawStatic(); draw();
+    run = TCPA.runDay(day, 1, step, TCPA.WINDOW, trust); shown = 1; drawStatic(); draw();
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce) { shown = n(); draw(); return; }
     timer = setInterval(() => { shown = Math.min(n(), shown + 2); draw(); if (shown >= n()) clearInterval(timer); }, 30);
@@ -73,8 +81,10 @@ WIDGETS.tcpalearn = function (el) {
   el.addEventListener('click', e => {
     const s = e.target.closest('[data-s]');
     if (s) { step = +s.dataset.s; $$('[data-s]', el).forEach(b => b.setAttribute('aria-pressed', b === s)); play(); return; }
+    const t = e.target.closest('[data-a="trust"]');
+    if (t) { trust = trust ? 0 : TRUST; t.setAttribute('aria-pressed', !!trust); play(); return; }
     if (e.target.closest('[data-a="play"]')) play();
   });
   // open on the finished run so the page is complete at rest
-  run = TCPA.runDay(day, 1, step); shown = n(); drawStatic(); draw();
+  run = TCPA.runDay(day, 1, step, TCPA.WINDOW, trust); shown = n(); drawStatic(); draw();
 };

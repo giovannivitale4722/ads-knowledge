@@ -67,7 +67,29 @@ TERMS['target-cpa'] = { name: 'Target CPA autobidder', needs: ['autobidding'],
         <div><h3>Too expensive</h3><p>CPA so far is $26. Turn α down and pull back.</p></div>
       </div>
       <p>After every window of 1,000 auctions, the controller measures how far off it is and nudges α:</p>
-      <div class="formula">error = (T − CPA) ÷ T&nbsp;&nbsp;&nbsp;&nbsp;then&nbsp;&nbsp;&nbsp;&nbsp;α ← α × e<sup>step × error</sup></div>
+      <div class="anno">
+        <div class="formula">error = (T − CPA) ÷ T&nbsp;&nbsp;&nbsp;&nbsp;then&nbsp;&nbsp;&nbsp;&nbsp;α ← α × e<sup><span class="anno-mark">step</span> × error</sup></div>
+        <aside class="anno-note" aria-label="About the step size">
+          <h3>Why is the step 0.5?</h3>
+          <p>Honestly, it's an arbitrary choice for this demo and the C++ project: a middle value that works on this simulated day. Nothing in the math picks it. A real system would set it more carefully:</p>
+          <ul>
+            <li><b>Trust the signal more as data comes in.</b> Early in the day a window holds only a few conversions, so the CPA is mostly noise. Scale the step by how confident you are:
+              <div class="formula small">effective step = step × conversions so far ÷ (conversions so far + 100)</div>
+              <div class="tbl-wrap"><table>
+                <tr><th class="num">Conversions so far</th><th class="num">Confidence</th><th class="num">Effective step (from 0.5)</th></tr>
+                <tr><td class="num">5</td><td class="num">5%</td><td class="num">0.02: barely moves</td></tr>
+                <tr><td class="num">50</td><td class="num">33%</td><td class="num">0.17</td></tr>
+                <tr><td class="num">300</td><td class="num">75%</td><td class="num">0.38</td></tr>
+                <tr><td class="num">1,000</td><td class="num">91%</td><td class="num">0.45: nearly the full step</td></tr>
+              </table></div>
+              Try it with the "Scale step by data" button in the demo below.</li>
+            <li><b>Replay history.</b> Test candidate steps against past auctions in a simulator, like the C++ project, and keep the best.</li>
+            <li><b>Shrink it over time.</b> Big steps early to get close fast, small steps later to settle.</li>
+            <li><b>Use a PID controller.</b> React to how fast the error is changing, so it eases off before overshooting.</li>
+          </ul>
+        </aside>
+        <svg class="anno-arrow" aria-hidden="true"></svg>
+      </div>
       <div class="tbl-wrap"><table>
         <tr><th>CPA so far</th><th class="num">error</th><th class="num">α is multiplied by (step 0.5)</th><th>Effect</th></tr>
         <tr><td>$10</td><td class="num">+0.50</td><td class="num">× 1.28</td><td>Bid 28% more</td></tr>
@@ -84,6 +106,7 @@ TERMS['target-cpa'] = { name: 'Target CPA autobidder', needs: ['autobidding'],
       <h2>Step 5: Watch it learn</h2>
       <p>The same day again, but now α starts at 1 and the controller has to find it on its own. Try different step sizes.</p>
       <div class="widget" data-widget="tcpalearn"></div>
+      <p>Turn on <b>Scale step by data</b> to try the idea from the note above: every step from 0.1 to 1 then gets within a few percent of the best result, so the exact step matters far less.</p>
       <p>With a moderate step, α climbs from 1 toward the hindsight-best value and the running CPA settles near $20. With a big step it overshoots. Then the running cost, which remembers every expensive window, keeps pushing α down long after it should stop. That's why real systems tune the step size carefully and smooth their signals.</p>
 
       <h2>How this maps to your code</h2>

@@ -47,3 +47,18 @@ document.addEventListener('click', e => {
   const h = document.getElementById(b.dataset.goto);
   if (h) h.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
 });
+
+/* ---------- annotation arrows: a curved arrow from a highlighted word to its note ---------- */
+function drawAnnotations() {
+  $$('.anno').forEach(box => {
+    const mark = $('.anno-mark', box), note = $('.anno-note', box), svg = $('.anno-arrow', box);
+    if (!mark || !note || !svg) return;
+    const b = box.getBoundingClientRect(), m = mark.getBoundingClientRect(), n = note.getBoundingClientRect();
+    const x1 = m.left + m.width / 2 - b.left, y1 = m.bottom - b.top + 4;
+    const x2 = Math.min(n.left - b.left + 40, n.right - b.left - 20), y2 = n.top - b.top - 6;
+    const mid = (y1 + y2) / 2;
+    svg.innerHTML = `<defs><marker id="anno-head" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z"/></marker></defs>
+      <path d="M${x1},${y1} C${x1},${mid} ${x2},${mid} ${x2},${y2}" marker-end="url(#anno-head)"/>`;
+  });
+}
+let annoRz; addEventListener('resize', () => { clearTimeout(annoRz); annoRz = setTimeout(drawAnnotations, 80); });

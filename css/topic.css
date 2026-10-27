@@ -97,3 +97,17 @@ pre.code .c { color: var(--muted); }
 .prose details.math summary { cursor: pointer; font-weight: 500; }
 .prose details.math[open] summary { margin-bottom: 10px; }
 .prose details.math > p, .prose details.math > .formula { margin-top: 10px; }
+
+/* annotation: a highlighted word in a formula, a curved arrow, and a note */
+.anno { position: relative; display: flex; flex-direction: column; gap: 40px; }
+.anno-mark { background: var(--hue-soft); color: var(--hue); font-style: normal; font-weight: 500; padding: 0 3px; border-radius: 3px; }
+.anno-note { position: relative; z-index: 1; margin-left: 24px; padding: 14px 18px; border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--ground); display: flex; flex-direction: column; gap: 10px; font-size: 14px; line-height: 1.6; }
+.anno-note h3 { font-size: 15px; }
+.anno-note ul { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 8px; }
+.anno-note .tbl-wrap { margin: 8px 0; }
+.anno-note .tbl-wrap table { min-width: 0; }
+.formula.small { font-size: 14px; padding: 8px 12px; margin: 6px 0; background: var(--surface); }
+.anno-arrow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.anno-arrow path { fill: none; stroke: var(--hue); stroke-width: 1.5; }
+.anno-arrow marker path { fill: var(--hue); stroke: none; }
+@media (max-width: 640px) { .anno-note { margin-left: 0; } }

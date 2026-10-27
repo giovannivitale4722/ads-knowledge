@@ -26,6 +26,8 @@ function route() {
   });
   requestAnimationFrame(drawEdges);
   buildToc();
+  requestAnimationFrame(drawAnnotations);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawAnnotations);
   window.scrollTo(0, 0);
 }
 

@@ -179,3 +179,8 @@ input[type="range"] { width: 100%; accent-color: var(--text); }
 .sw.s-b { border-top-color: var(--text); }
 .sw.s-c { border-top-style: dashed; }
 .sw.s-d { border-top-color: var(--text); border-top-style: dashed; }
+
+/* on/off toggle button in demos */
+.btn-ghost-toggle { background: var(--surface); color: var(--text); border-color: var(--control); }
+.btn-ghost-toggle:hover { background: var(--raised); }
+.btn-ghost-toggle[aria-pressed="true"] { background: var(--hue-soft); color: var(--hue); border-color: var(--hue); }
