@@ -4,6 +4,7 @@ function viewHome() {
   const demos = [
     ['autobidding', 'Four strategies, one day', 'Compare Maximize Clicks, Maximize Conversions, Target CPA and Target ROAS'],
     ['target-cpa', 'The α dial', 'See how one multiplier sets every bid in an autobidder'],
+    ['everyone-autobids', 'A market of autobidders', 'Watch four autobidders push prices up and compete'],
     ['logistic-regression', 'Train a click model', 'Watch a real model learn from 2,000 impressions'],
     ['adx', 'Watch one impression get sold', 'Follow a real-time auction, millisecond by millisecond'],
     ['pctr', 'Build a pCTR', 'Change the situation and watch the click prediction move'],

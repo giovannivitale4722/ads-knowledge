@@ -169,3 +169,13 @@ input[type="range"] { width: 100%; accent-color: var(--text); }
 .ab-table tr.sel td.goal { background: var(--hue-soft); }
 .ab-key { font-size: var(--fs-small); color: var(--muted); }
 .goal-chip { background: var(--hue-soft); color: var(--text); padding: 1px 6px; border-radius: 4px; }
+
+/* market of autobidders: one style per advertiser (two hues, solid and dashed) */
+.chart .curve.s-a { stroke: var(--hue); }
+.chart .curve.s-b { stroke: var(--text); }
+.chart .curve.s-c { stroke: var(--hue); stroke-dasharray: 5 3; }
+.chart .curve.s-d { stroke: var(--text); stroke-dasharray: 5 3; }
+.sw { display: inline-block; width: 16px; height: 0; border-top: 2px solid var(--hue); vertical-align: middle; margin-right: 8px; }
+.sw.s-b { border-top-color: var(--text); }
+.sw.s-c { border-top-style: dashed; }
+.sw.s-d { border-top-color: var(--text); border-top-style: dashed; }
