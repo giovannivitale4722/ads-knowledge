@@ -7,12 +7,18 @@ function route() {
   closePop();
   let h = location.hash.slice(1) || 'home';
   const main = $('#main');
-  if (h === 'glossary') main.innerHTML = viewGlossary();
-  else if (h === 'ml') main.innerHTML = viewML();
-  else if (h === 'impl') main.innerHTML = viewImpl();
-  else if (h.startsWith('t-') && TERMS[h.slice(2)]) main.innerHTML = viewTerm(h.slice(2));
-  else { h = 'home'; main.innerHTML = viewHome(); }
-  $$('[data-widget]', main).forEach(el => WIDGETS[el.dataset.widget](el));
+  try {
+    if (h === 'glossary') main.innerHTML = viewGlossary();
+    else if (h === 'ml') main.innerHTML = viewML();
+    else if (h === 'impl') main.innerHTML = viewImpl();
+    else if (h.startsWith('t-') && TERMS[h.slice(2)]) main.innerHTML = viewTerm(h.slice(2));
+    else { h = 'home'; main.innerHTML = viewHome(); }
+    $$('[data-widget]', main).forEach(el => WIDGETS[el.dataset.widget](el));
+  } catch (err) {
+    console.error(err);
+    main.innerHTML = `<section class="panel"><h1>This page didn't load</h1><p>Part of the site may be out of date in your browser. <a href="${location.pathname}?reload=${Date.now()}${location.hash}">Reload the page</a> to fetch the latest version.</p></section>`;
+    return;
+  }
   $$('.rail-item').forEach(a => {
     const subj = h.startsWith('t-') ? sectionOf(h.slice(2)).name : '';
     const nav = h.startsWith('t-') ? (subj === ML_SUBJECT ? 'ml' : subj === IMPL_SUBJECT ? 'impl' : 'glossary') : h;

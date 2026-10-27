@@ -6,6 +6,8 @@ Live site: https://www.giovitale.com/ads-knowledge/
 
 To preview it locally, open `index.html` in a browser. There is no build step. Pushing to `main` redeploys the site on GitHub Pages.
 
+**Before every deploy, run `./stamp-version.sh`.** It tags each CSS and JS link in `index.html` with a fresh `?v=` version. GitHub Pages lets browsers cache files for 10 minutes, and without the stamp a browser can mix a new `index.html` with old cached scripts, which breaks newly added pages.
+
 ## Folder layout
 
 ```

@@ -11,7 +11,7 @@ function ancestors(id, out = new Set()) { TERMS[id].needs.forEach(n => { if (!ou
 const unlocks = id => ids.filter(o => TERMS[o].needs.includes(id));
 const ordered = () => [...ids].sort((a, b) => depth(a) - depth(b) || ids.indexOf(a) - ids.indexOf(b));
 const stageOf = id => STAGES[Math.min(depth(id), STAGES.length - 1)];
-const sectionOf = id => SECTIONS.find(x => x.terms.includes(id));
+const sectionOf = id => SECTIONS.find(x => x.terms.includes(id)) || { name: 'Other topics', q: '', terms: [id] };
 const inOrder = list => ordered().filter(id => list.includes(id));
 const needsText = id => TERMS[id].needs.length ? 'Read first: ' + TERMS[id].needs.map(x => TERMS[x].name).join(', ') : 'A good place to start';
 
