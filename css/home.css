@@ -101,3 +101,10 @@
 .impl-links { display: flex; gap: 16px; flex-wrap: wrap; margin-top: auto; }
 .impl-links a { text-decoration: none; }
 .impl-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* "Currently reading" link in the Why I made this panel */
+.reading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 14px; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); color: var(--text); text-decoration: none; }
+.reading:hover { background: var(--raised); }
+.reading-l { font-size: var(--fs-small); color: var(--muted); }
+.reading-t { font-weight: 500; }
+.reading-m { font-size: var(--fs-small); color: var(--muted); }

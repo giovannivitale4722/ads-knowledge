@@ -40,6 +40,7 @@ function viewHome() {
     <section class="panel about">
       <div class="panel-head"><h2>Why I made this</h2><span class="aside">Updated ${UPDATED}</span></div>
       <p>I got really interested in ad exchanges, so I decided to study up on how they work, from auctions and bidding to how an ad gets picked for you. This site is everything I've learned so far, condensed into one place. I use it as my own reference, and you're welcome to as well: start from the beginning, or jump to whatever topic catches your interest! I'm still learning, so I'll keep adding to it and updating it as I go.</p>
+      ${READING ? `<a class="reading" href="#t-${READING.id}"><span class="reading-l">Currently reading</span><span class="reading-t">${READING.title}</span><span class="reading-m">${READING.from} · my notes so far →</span></a>` : ''}
     </section>
     <section class="panel start">
       <div class="start-main">

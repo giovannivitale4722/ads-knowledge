@@ -1,6 +1,8 @@
 /* Site settings: the "Updated" date and how topics are grouped into subjects.
    Every topic id must appear in exactly one subject (checked in js/app.js). */
 const UPDATED = 'Oct 30, 2026';
+/* The paper shown under "Currently reading" on the home page. Set to null to hide it. */
+const READING = { id: 'paper-rl-pid-pacing', title: 'Reinforcement Learning for Controller Parameters in the Auto-Bidding System at Pinterest', from: 'Pinterest, 2026' };
 const SECTIONS = [
   { name: 'Where ads appear', q: 'Where can an ad show up, and how is that space sold?', terms: ['impression', 'search-ads', 'display', 'youtube', 'adx'] },
   { name: 'What advertisers pay', q: 'How is an ad priced, and how are different prices compared?', terms: ['bid', 'cpc', 'cpm', 'expected-value', 'ecpm'] },
