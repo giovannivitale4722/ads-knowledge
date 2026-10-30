@@ -2,8 +2,9 @@
    Notes on a research paper: an RL agent that tunes a PID budget-pacing controller once a day.
    Content comes only from the user's reading notes. */
 TERMS['paper-rl-pid-pacing'] = { name: 'Paper: RL-tuned PID pacing', needs: ['max-conversions'],
-    short: 'Notes on a paper where a PID controller paces each campaign\'s budget through the day, and a reinforcement learning agent picks, once a day, how strongly the controller should react.',
+    short: 'Notes on a Pinterest paper where a PID controller paces each campaign\'s budget through the day, and a reinforcement learning agent picks, once a day, how strongly the controller should react.',
     body: () => `
+      <p class="sources">Paper: <a href="https://arxiv.org/html/2610.33248v1" target="_blank" rel="noopener">Reinforcement Learning for Controller Parameters in the Auto-Bidding System at Pinterest</a> (RLBP). Yichu Zhou, Qinyi Chen, Fei Feng, Jacob Loh, Mehdi Ben Ayed, Lin Yang, Andrei Curelea and Jiajing Xu, Pinterest. arXiv:2610.33248, October 2026.</p>
       <h2>The idea in one paragraph</h2>
       <p>A <b>PID controller</b> keeps each campaign's spending on track through the day by nudging its bid multiplier, much like the pacer in the ${T('max-conversions', 'Maximize Conversions project')}. How hard it reacts is set by its <b>gains</b>. Instead of using the same default gains for every campaign, a <b>reinforcement learning agent</b> looks at each campaign once a day and picks a multiplier for each gain: react more, less, or the default amount.</p>
       <ol class="pipe" style="--n:4">
@@ -39,7 +40,7 @@ TERMS['paper-rl-pid-pacing'] = { name: 'Paper: RL-tuned PID pacing', needs: ['ma
       <p><b>Driving analogy:</b> you're trying to arrive on time. P compares your speed with the speed you need right now and presses the gas accordingly. I remembers you've been running late all trip, so it keeps a little extra pressure on the gas even at normal speed, to make up lost time. D notices you're closing in on the car ahead quickly and taps the brake before you get too close.</p>
 
       <h2>What the agent controls</h2>
-      <p>Each knob has a default strength, its gain. The agent picks a multiplier that scales it for the day (Eq. 2 in the paper):</p>
+      <p>Each knob has a default strength, its gain. The agent picks a multiplier that scales it for the day (Eq. 3 in the paper, §3.2):</p>
       <div class="formula">today's gain = multiplier × default gain</div>
       <p>There are 3 multiplier choices per knob. D is always left at 1×, so in practice the agent tunes only P and I.</p>
 
