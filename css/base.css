@@ -160,3 +160,10 @@ a { color: inherit; }
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
 }
+
+/* "Limitations" toggle beside a group heading on the Implementations page */
+.notes-toggle { font: 500 var(--fs-small) var(--font); color: var(--muted); background: none; border: 0; padding: 4px 0; cursor: pointer; }
+.notes-toggle:hover { color: var(--text); }
+.notes-toggle span { display: inline-block; transition: transform .15s; }
+.notes-toggle[aria-expanded="true"] { color: var(--text); }
+.notes-toggle[aria-expanded="true"] span { transform: rotate(90deg); }

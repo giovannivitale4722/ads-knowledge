@@ -36,8 +36,18 @@ function viewImpl() {
       const ids = list.filter(id => (IMPL_PROJECTS[id] || {}).group === g.id);
       return !ids.length ? '' : `
     <section class="browse">
-      <div class="panel-head"><h2>${g.name} <span class="count">${ids.length}</span></h2></div>
+      <div class="panel-head"><h2>${g.name} <span class="count">${ids.length}</span></h2>${IMPL_NOTES[g.id] ? `<button type="button" class="notes-toggle" data-notes="${g.id}" aria-expanded="false" aria-controls="notes-${g.id}">Limitations <span aria-hidden="true">→</span></button>` : ''}</div>
       <div class="ml-examples">${ids.map(implCard).join('')}</div>
-      ${IMPL_NOTES[g.id] ? `<article class="panel"><div class="prose">${IMPL_NOTES[g.id]()}</div></article>` : ''}
+      ${IMPL_NOTES[g.id] ? `<article class="panel" id="notes-${g.id}" hidden><div class="prose">${IMPL_NOTES[g.id]()}</div></article>` : ''}
     </section>`; }).join('')}`;
 }
+
+// "Limitations" buttons open and close their group's notes panel.
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-notes]');
+  if (!b) return;
+  const panel = document.getElementById('notes-' + b.dataset.notes), open = b.getAttribute('aria-expanded') !== 'true';
+  panel.hidden = !open;
+  b.setAttribute('aria-expanded', open);
+  if (open) panel.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+});
