@@ -28,17 +28,8 @@ function viewImpl() {
   return `
     <header class="title-row">
       <div><div class="crumbs"><a href="#home">Home</a> / Implementations</div><h1>Implementations</h1>
-        <p class="sub">Build the real algorithms yourself. Each project has a visual walkthrough here and a code project where you write the core of the algorithm.</p></div>
+        <p class="sub">These are algorithms I've learned and built myself. Each one has a visual walkthrough here that explains how it works, and the code on GitHub.</p></div>
     </header>
-    <section class="panel">
-      <div class="panel-head"><h2>How each project works</h2></div>
-      <ol class="pipe" style="--n:4">
-        <li><b>Read the walkthrough</b><span>the idea, step by step, with demos you can play with</span></li>
-        <li><b>Open the project</b><span>everything is built except the core logic</span></li>
-        <li><b>Fill in the TODOs</b><span>the comments spell out exactly what each one must do</span></li>
-        <li><b>Test and run</b><span>make test checks you, make run shows the results</span></li>
-      </ol>
-    </section>
     ${IMPL_GROUPS.map(g => {
       const ids = list.filter(id => (IMPL_PROJECTS[id] || {}).group === g.id);
       return !ids.length ? '' : `
