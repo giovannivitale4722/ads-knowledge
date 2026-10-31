@@ -38,5 +38,6 @@ function viewImpl() {
     <section class="browse">
       <div class="panel-head"><h2>${g.name} <span class="count">${ids.length}</span></h2></div>
       <div class="ml-examples">${ids.map(implCard).join('')}</div>
+      ${IMPL_NOTES[g.id] ? `<article class="panel"><div class="prose">${IMPL_NOTES[g.id]()}</div></article>` : ''}
     </section>`; }).join('')}`;
 }
