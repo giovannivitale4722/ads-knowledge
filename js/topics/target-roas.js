@@ -82,10 +82,35 @@ make run      <span class="c"># simulates the day and compares four strategies</
       </table></div>
       <p>The C++ day uses different random numbers from the demo above, so its gap is bigger: 90% more sales from using order value, instead of the demo's 54%.</p>
 
+      <h2>When sales arrive late</h2>
+      <p>So far, every sale reached the bidder in the same auction it was won. In real life a shopper clicks on Monday and buys on Thursday. The extension in the same project, <code>make run-delay</code>, makes each sale arrive about 4 hours after its click on average, sometimes much later.</p>
+      <p><b>The problem:</b> spend is known right away, but sales trickle in. So the latest windows always look worse than they really are. A controller that trusts the reported numbers reads that as "falling short of the target" and cuts bids, all day long.</p>
+      <p><b>The fix:</b> estimate the sales still on their way. The bidder keeps its books by click window, and knows from past days what share of a window's sales has usually arrived after a given time, called its <b>completion</b>. There are two ways to use it:</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Approach</th><th>Estimated final sales for one click window</th><th>Catch</th></tr>
+        <tr><td><b>Scale up</b></td><td>reported ÷ completion</td><td>A window that just ended has about 6% of its sales in, so one lucky early sale gets multiplied by 16</td></tr>
+        <tr><td><b>Blend</b></td><td>reported + (1 − completion) × predicted</td><td>Leans on the models' predictions being unbiased</td></tr>
+      </table></div>
+      <p><b>Blend</b> keeps the sales that have actually arrived, and fills in only the missing share with what the pConv and order value models predicted for the auctions won in that window. Old windows are nearly all real sales, and the newest is nearly all prediction. The same day, with delayed sales:</p>
+      <div class="tbl-wrap"><table>
+        <tr><th>Strategy</th><th class="num">Sales vs best</th><th class="num">True ROAS</th><th class="num">ROAS seen by midnight</th></tr>
+        <tr><td>Instant sales (no delay)</td><td class="num">93%</td><td class="num">296%</td><td class="num">296%</td></tr>
+        <tr><td>Delayed, naive</td><td class="num">49%</td><td class="num">391%</td><td class="num">320%</td></tr>
+        <tr><td>Delayed, scale up</td><td class="num">88%</td><td class="num">263%</td><td class="num">253%</td></tr>
+        <tr><td><b>Delayed, blend</b></td><td class="num"><b>101%</b></td><td class="num"><b>292%</b></td><td class="num">261%</td></tr>
+      </table></div>
+      <ul>
+        <li><b>Naive loses half the sales.</b> It believes it's falling short, bids far too cautiously, and ends with a needlessly high 391% ROAS.</li>
+        <li><b>Scale up overshoots.</b> Its noisy early estimates push α too high, so the true ROAS lands at 263%, well under the target.</li>
+        <li><b>Blend matches the hindsight best</b> and stays close to 300%. With other random delays and average delays of 2, 4 and 8 hours, it stayed at 93–102% of the best sales and 292–310% ROAS in all 9 runs. Naive got worse as delays grew.</li>
+        <li><b>"Seen by midnight"</b> is what the bidder could see when the day ended. The gap to the true ROAS is sales still on their way, which is why recent days always look worse in reports.</li>
+      </ul>
+      <p>The three TODOs are in <code>src/delayed_bidder.cpp</code>: the scale-up estimate, the blended estimate, and the controller that picks which one to trust. Check them with <code>make test-delay</code>.</p>
+
       <h2>What makes it hard in production</h2>
       <ul>
         <li><b>Two models can be wrong.</b> The bid multiplies pConv by the predicted order value. If either is biased, the bid is too. An order value model that's 30% too optimistic quietly pushes ROAS below target until the controller catches up.</li>
-        <li><b>Values arrive late and change.</b> Returns and cancellations lower the real sales days after the click.</li>
+        <li><b>Values change after the sale.</b> Returns and cancellations lower the real sales days after the click.</li>
         <li><b>Lumpy sales.</b> A few huge orders can make one day's ROAS look great or terrible by luck, which is why the step has to be smaller.</li>
         <li><b>Budgets.</b> With a daily budget too, the bid becomes α × pacing × value, as on the ${T('max-conversions', 'budget pacer')} page.</li>
       </ul>

@@ -104,9 +104,84 @@ Step 0.1 "beats" the benchmark only by missing the target, which the benchmark w
 | `src/simulate.hpp/.cpp` | Runs a day, calling your bidder for every auction and every window |
 | `src/main.cpp` | Compares the four strategies |
 | `src/tests.cpp` | Unit tests for the TODOs |
+| `src/delayed_bidder.cpp` | **Your code for the extension:** the delay-aware estimates and controller |
+| `src/delayed_bidder.hpp` | The delay-aware bidder's interface, and `completion()` |
+| `src/delay_main.cpp` | The delayed day: sales land later, four strategies compared |
+| `src/delay_tests.cpp` | Unit tests for the extension's TODOs |
+
+## Extension: conversion delay
+
+**Walkthrough:** https://www.giovitale.com/ads-knowledge/#t-target-roas (section "When sales arrive late")
+
+In the main project, a sale reaches the bidder in the same auction. In real life it arrives
+hours or days later. This extension makes each sale arrive a random number of windows after its
+click, about 4 hours on average, and watches what that does to the controller.
+
+**The problem.** Spend is known right away, but sales trickle in. So the most recent windows
+always look worse than they are, and the controller reads that as "falling short of the target"
+and cuts bids, all day long.
+
+**The fix: estimate the sales still on their way.** The bidder keeps its books by click window,
+and `completion(age)` gives the share of a window's sales that has usually arrived by now. Two
+ways to use it:
+
+| Approach | Estimate for one click window | Weakness |
+|---|---|---|
+| Scale up (TODO 1) | reported ÷ completion | A window that just ended has a few percent of its sales in, so one lucky early sale gets multiplied by 16 |
+| Blend (TODO 2) | reported + (1 − completion) × predicted | Relies on the models' predictions being unbiased |
+
+Blend keeps the sales that have actually arrived, and fills in only the missing share with what
+the models predicted for the auctions won in that window. That's much less noisy.
+
+### Your three TODOs
+
+All are in [`src/delayed_bidder.cpp`](src/delayed_bidder.cpp). It's separate from `troas_bidder.cpp`,
+so the main project keeps working as it is.
+
+| | Function | What it does |
+|---|---|---|
+| TODO 1 | `scaled_sales(now)` | Sum of each window's reported sales ÷ its completion |
+| TODO 2 | `blended_sales(now)` | Sum of reported + (1 − completion) × predicted, per window |
+| TODO 3 | `end_window(now)` | The Target ROAS controller, using the sales the mode says to trust |
+
+```
+make test-delay   # checks the three delay TODOs
+make run-delay    # simulates the delayed day and compares the approaches
+```
+
+When your code is right, `make run-delay` should print:
+
+| Strategy | Sales | True ROAS | Seen by midnight |
+|---|---|---|---|
+| Best fixed alpha (hindsight) | $118,370 | 300% | 300% |
+| Instant sales (no delay) | $110,588 | 296% | 296% |
+| Delayed, naive | $57,624 | 391% | 320% |
+| Delayed, scale up | $104,211 | 263% | 253% |
+| Delayed, blend | $119,453 | 292% | 261% |
+
+- **Naive** loses half the sales. It thinks it's falling short, so it bids far too cautiously,
+  and ends with a needlessly high 391% ROAS.
+- **Scale up** recovers most of the sales but overshoots: noisy early estimates push alpha too high,
+  and the true ROAS lands at 263%.
+- **Blend** gets the full hindsight-best sales, close to the 300% target.
+- **"Seen by midnight"** is what the bidder could see at the end of the day. The gap to the true
+  ROAS is sales still on their way, which is why recent days always look worse in reports.
+
+**It isn't luck.** With other random delays and other average delays (2, 4 and 8 hours), blend
+stayed at 93–102% of the best sales and 292–310% ROAS in all 9 runs. Naive got worse as delays
+grew, down to a few percent of the best sales with 8-hour delays.
+
+### Things to try
+
+- **A biased prediction.** Make `predicted_sales` 30% too high in `delay_main.cpp`. Blend leans on
+  it, so what happens? This is why production systems watch their models' calibration.
+- **A wrong delay curve.** Tell the bidder the mean delay is 8 windows when it's really 16.
+- **Only trust mature windows.** Ignore windows whose completion is below 50%. It sounds safe, but
+  the controller then reacts to stale information. Try it and see.
 
 ## Ideas once it works
 
+- **Conversion delay:** done, see the extension above.
 - **Data-scaled steps,** as on the Target CPA page: move alpha less while there are few orders.
 - **A biased value model.** Make `order_value` predictions 30% too high. What happens to ROAS,
   and does the controller save you?
