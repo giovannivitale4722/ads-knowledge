@@ -7,3 +7,5 @@ sources/
 # C++ build output and simulation results
 implementations/*/build/
 implementations/*/results/
+implementations/*/data/
+__pycache__/

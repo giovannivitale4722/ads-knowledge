@@ -3,7 +3,8 @@ const IMPL_SUBJECT = 'Implementations';
 const IMPL_REPO = 'https://github.com/giovannivitale4722/ads-knowledge/tree/main/implementations/';
 const IMPL_PROJECTS = {
   'target-cpa': { folder: 'tcpa-autobidder', lang: 'C++', todos: 2 },
-  'max-conversions': { folder: 'budget-pacer', lang: 'C++', todos: 3 }
+  'max-conversions': { folder: 'budget-pacer', lang: 'C++', todos: 3 },
+  'item-cf': { folder: 'movie-recommender', lang: 'Python', todos: 3 }
 };
 
 function viewImpl() {
