@@ -8,8 +8,8 @@ const IMPL_PROJECTS = {
 };
 // The groups the Implementations page is split into, in order. Every project names one in `group`.
 const IMPL_GROUPS = [
-  { id: 'autobidding', name: 'Autobidding', q: 'Bidders that set every bid for an advertiser, in C++' },
-  { id: 'recsys', name: 'Recommendation algorithms', q: 'Systems that pick what to show each person, in Python' }
+  { id: 'autobidding', name: 'Autobidding' },
+  { id: 'recsys', name: 'Recommendation algorithms' }
 ];
 
 function implCard(id) {
@@ -34,7 +34,7 @@ function viewImpl() {
       const ids = list.filter(id => (IMPL_PROJECTS[id] || {}).group === g.id);
       return !ids.length ? '' : `
     <section class="browse">
-      <div class="panel-head"><h2>${g.name} <span class="count">${ids.length}</span></h2><span class="aside">${g.q}</span></div>
+      <div class="panel-head"><h2>${g.name} <span class="count">${ids.length}</span></h2></div>
       <div class="ml-examples">${ids.map(implCard).join('')}</div>
     </section>`; }).join('')}`;
 }
