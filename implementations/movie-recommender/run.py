@@ -1,5 +1,5 @@
 """run.py
-Compares three recommenders on MovieLens 100K. Run with:  make run
+Compares the recommenders on MovieLens 100K. Run with:  make run
 
 For each of the 943 people, their most recent movie is hidden. Each recommender learns from
 everything else, makes a top-10 list for every person, and is scored on how often the hidden
@@ -8,6 +8,7 @@ movie is in that list.
 import numpy as np
 
 from recsys import data, metrics
+from recsys.mf import MatrixFactorizationRecommender
 from recsys.recommenders import ItemKNNRecommender, PopularityRecommender, RandomRecommender, recommend
 
 K = 10
@@ -33,12 +34,12 @@ def main():
     print(f"Each person's most recent movie is hidden. Can a top-{K} list find it?\n")
 
     models = [("Random", RandomRecommender()), ("Popularity", PopularityRecommender()),
-              ("Item-based CF", ItemKNNRecommender())]
-    print(f"  {'Recommender':<16} {'Hit rate@10':>12} {'NDCG@10':>10} {'Coverage':>10}")
+              ("Item-based CF", ItemKNNRecommender()), ("Matrix factorization", MatrixFactorizationRecommender())]
+    print(f"  {'Recommender':<22} {'Hit rate@10':>12} {'NDCG@10':>10} {'Coverage':>10}")
     for name, model in models:
         model.fit(train)
         hit_rate, ndcg, coverage = evaluate(model, train, test)
-        print(f"  {name:<16} {hit_rate:>11.1%} {ndcg:>10.3f} {coverage:>9.1%}")
+        print(f"  {name:<22} {hit_rate:>11.1%} {ndcg:>10.3f} {coverage:>9.1%}")
 
     watched = np.flatnonzero(train[EXAMPLE_USER])
     print(f"\nPerson {EXAMPLE_USER + 1} watched {len(watched)} movies, including:")

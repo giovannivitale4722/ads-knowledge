@@ -1,15 +1,19 @@
-# Movie recommender: item-based collaborative filtering (Python)
+# Movie recommender (Python)
 
-The first recommendation algorithm: **"people who watched what you watched also watched…"**.
-It runs on MovieLens 100K, 100,000 real movie ratings from 943 people, and is compared with a
-random baseline and a popularity baseline on the same test.
+Recommendation algorithms on MovieLens 100K, 100,000 real movie ratings from 943 people, all
+scored on the same test and compared with a random and a popularity baseline:
 
-You write the three core pieces. Everything else is done.
+1. **Item-based collaborative filtering:** "people who watched what you watched also watched…".
+   Your code: [`recsys/recommenders.py`](recsys/recommenders.py).
+2. **Matrix factorization (implicit ALS):** learns a short taste vector for every person and movie.
+   Your code: [`recsys/mf.py`](recsys/mf.py). See [the section below](#algorithm-2-matrix-factorization-implicit-als).
+
+Each algorithm has three TODOs. Everything else is done.
 
 **Start with the visual walkthrough:** https://www.giovitale.com/ads-knowledge/#t-item-cf
 It explains the algorithm step by step on a tiny example you can click through, and maps each idea to the code here.
 
-## The algorithm in one page
+## Algorithm 1: Item-based collaborative filtering
 
 **The data.** A matrix with one row per person and one column per movie. A 1 means that person
 watched that movie. We ignore the star ratings: having watched it is the signal. That's
@@ -46,7 +50,7 @@ else and makes a top-10 list. We count how often the hidden movie made the list:
 - **Coverage:** the share of all movies recommended to anyone. Popularity shows everyone the
   same 10 movies, so its coverage is tiny.
 
-## Your three TODOs
+### Your three TODOs
 
 All are in [`recsys/recommenders.py`](recsys/recommenders.py). It's the only file you edit.
 
@@ -68,7 +72,8 @@ make clean    # deletes the downloaded data
 
 You need Python 3 and numpy (`pip install numpy`).
 
-When your code is right, `make run` should print:
+When your item-based CF code is right, `make run` should print these rows (plus a matrix
+factorization row, all zeros until you do algorithm 2):
 
 | Recommender | Hit rate@10 | NDCG@10 | Coverage |
 |---|---|---|---|
@@ -80,7 +85,7 @@ Then it shows one person's movies, their hidden movie and what each recommender 
 
 Item-based CF beats popularity, but not by much. That's the starting point for the first optimization.
 
-## Optimizations to try once it works
+### Optimizations to try once it works
 
 - **Keep only the closest neighbors (the "k" in kNN).** Right now every movie votes, including
   ones that are only slightly similar, and those weak votes add up to a popularity bias. In `fit`,
@@ -93,19 +98,84 @@ Item-based CF beats popularity, but not by much. That's the starting point for t
 - **Use the stars.** Treat only 4 and 5 star ratings as "liked", and see whether the hit rate on
   liked movies changes.
 
-Next in the series: **matrix factorization**, which learns a short "taste vector" for every
-person and movie instead of comparing raw columns.
+## Algorithm 2: Matrix factorization (implicit ALS)
+
+**Walkthrough:** https://www.giovitale.com/ads-knowledge/#t-matrix-factorization
+
+**The idea.** Item-based CF describes a movie by its whole column: 943 numbers, mostly zeros.
+Matrix factorization **learns** a short vector of 32 numbers for every person and every movie,
+so that
+
+```
+person vector · movie vector  ≈  1 if they watched it, 0 if not
+```
+
+Nobody says what the numbers mean. Training finds "taste dimensions" on its own, such as
+animation versus action, or old versus new. To score a movie, take the dot product of your
+vector and the movie's.
+
+**Training: ALS (alternating least squares).** If every movie vector is held fixed, the best
+vector for one person is a small least-squares problem with an exact answer. Holding the people
+fixed makes it the same problem for each movie. So alternate: solve all people, then all movies,
+then repeat. Ten rounds is plenty here.
+
+**Implicit feedback** (Hu, Koren & Volinsky, 2008). A 1 means "watched", and we're confident
+about it. A 0 might mean "didn't like it" or just "never saw it". So watched movies count more
+in the fit: confidence `1 + alpha` for a watched movie, `1` for the rest. Each person's vector is
+then the solution of
+
+```
+A x = b,   A = YᵀY + alpha × (Y_watched)ᵀ Y_watched + reg × I,   b = (1 + alpha) × Σ y_watched
+```
+
+where Y holds the movie vectors. `reg` (regularization) keeps vectors small, so they don't
+memorize noise.
+
+### Your three TODOs
+
+All are in [`recsys/mf.py`](recsys/mf.py).
+
+| | Where | What it does |
+|---|---|---|
+| TODO 1 | `solve_one` | One person's (or movie's) vector: build `A` and `b`, then `np.linalg.solve` |
+| TODO 2 | `MatrixFactorizationRecommender.fit` | The alternating loop: people, then movies, `iterations` times |
+| TODO 3 | `MatrixFactorizationRecommender.scores` | One person's vector times every movie's vector |
+
+`als_step`, which runs `solve_one` for every row, is already done. Passing `train.T` makes the same
+function solve for movies instead of people.
+
+When your code is right, `make run` adds a fourth row:
+
+| Recommender | Hit rate@10 | NDCG@10 | Coverage |
+|---|---|---|---|
+| Item-based CF | 5.9% | 0.028 | 14.1% |
+| Matrix factorization | 9.8% | 0.053 | 46.6% |
+
+That's two thirds more hits than item-based CF, and three times as many different movies
+recommended. It trains in about a second.
+
+### Things to try
+
+- **Change `factors`.** 8, 32, 128: more factors can capture finer tastes, but overfit sooner.
+- **Change `alpha` and `reg`.** Higher alpha trusts "watched" more. Higher reg keeps vectors smaller.
+- **Look at the vectors.** Find the movies whose vectors are closest to Toy Story's. Do they make sense?
+- **Compare with item-based CF plus top-k neighbors**, the optimization above. Which wins?
+
+Next in the series: **two-tower models**, which compute the vectors from features (age, genre,
+history) instead of storing one per ID, so brand-new people and movies get vectors too.
 
 ## Files
 
 | File | What's in it |
 |---|---|
 | `recsys/recommenders.py` | **Your code:** popularity and item-based CF |
+| `recsys/mf.py` | **Your code:** matrix factorization with implicit ALS |
 | `recsys/data.py` | Downloads MovieLens, builds the matrix, hides each person's latest movie |
 | `recsys/metrics.py` | Hit rate and NDCG |
 | `run.py` | Compares the recommenders and shows example recommendations |
-| `tests.py` | Unit tests for the TODOs |
+| `tests.py` | Unit tests for the TODOs of both algorithms |
 
 MovieLens 100K is from GroupLens Research: F. Maxwell Harper and Joseph A. Konstan, "The
 MovieLens Datasets: History and Context", ACM Transactions on Interactive Intelligent Systems,
-2015. Its license allows research use but not redistribution, so it's downloaded, not committed.
+2015. Implicit ALS is from Yifan Hu, Yehuda Koren and Chris Volinsky, "Collaborative Filtering for
+Implicit Feedback Datasets", ICDM 2008. MovieLens's license allows research use but not redistribution, so it's downloaded, not committed.

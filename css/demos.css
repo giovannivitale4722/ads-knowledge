@@ -192,3 +192,4 @@ input[type="range"] { width: 100%; accent-color: var(--text); }
 /* Item-based CF demo: the small watch matrix and the "You watched" label */
 .cf-matrix td, .cf-matrix th { padding-top: 4px; padding-bottom: 4px; }
 .lbl-inline { font-size: var(--fs-small); color: var(--muted); align-self: center; }
+.chart .mf-dot { fill: var(--text); transition: cx .3s, cy .3s; }

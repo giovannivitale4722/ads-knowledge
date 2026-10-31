@@ -10,6 +10,6 @@ const SECTIONS = [
   { name: 'How auctions work', q: 'Who wins, what do they pay, and how should you bid?', terms: ['auction-mechanism', 'vickrey', 'gsp', 'first-price', 'bid-shading'] },
   { name: 'Autobidding', q: 'How does Google set bids for advertisers automatically?', terms: ['autobidding', 'everyone-autobids'] },
   { name: 'Machine learning in ads', q: 'How do machines learn to predict clicks and pick ads?', terms: ['logistic-regression'] },
-  { name: 'Implementations', q: 'Can I build these algorithms myself?', terms: ['target-cpa', 'max-conversions', 'item-cf'] },
+  { name: 'Implementations', q: 'Can I build these algorithms myself?', terms: ['target-cpa', 'max-conversions', 'item-cf', 'matrix-factorization'] },
   { name: 'Research papers', q: 'What do published papers say, in my own notes?', terms: ['paper-rl-pid-pacing'] }
 ];
