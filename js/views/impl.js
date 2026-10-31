@@ -4,6 +4,7 @@ const IMPL_REPO = 'https://github.com/giovannivitale4722/ads-knowledge/tree/main
 const IMPL_PROJECTS = {
   'target-cpa': { folder: 'tcpa-autobidder', lang: 'C++', todos: 2, group: 'autobidding' },
   'max-conversions': { folder: 'budget-pacer', lang: 'C++', todos: 3, group: 'autobidding' },
+  'target-roas': { folder: 'troas-autobidder', lang: 'C++', todos: 3, group: 'autobidding' },
   'item-cf': { folder: 'movie-recommender', lang: 'Python', todos: 3, group: 'recsys' },
   'matrix-factorization': { folder: 'movie-recommender', lang: 'Python', todos: 3, group: 'recsys' }
 };

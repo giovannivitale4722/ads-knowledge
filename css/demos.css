@@ -193,3 +193,9 @@ input[type="range"] { width: 100%; accent-color: var(--text); }
 .cf-matrix td, .cf-matrix th { padding-top: 4px; padding-bottom: 4px; }
 .lbl-inline { font-size: var(--fs-small); color: var(--muted); align-self: center; }
 .chart .mf-dot { fill: var(--text); transition: cx .3s, cy .3s; }
+
+/* Target ROAS demo: value-aware (hue) against value-blind (ink) bars */
+.chart .bar-aware { fill: var(--hue); }
+.chart .bar-blind { fill: var(--edge); }
+.tlegend .sw-aware { background: var(--hue); }
+.tlegend .sw-blind { background: var(--edge); }
